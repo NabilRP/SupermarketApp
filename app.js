@@ -93,11 +93,11 @@ app.get('/',  (req, res) => {
     res.render('index', {user: req.session.user} );
 });
 
-app.get('/inventory', checkAuthenticated, checkAdmin, (req, res) => {
+app.get('/admin', checkAuthenticated, checkAdmin, (req, res) => {
     // Fetch data from MySQL
     connection.query('SELECT * FROM products', (error, results) => {
       if (error) throw error;
-      res.render('inventory', { products: results, user: req.session.user });
+      res.render('admin', { products: results, user: req.session.user });
     });
 });
 
@@ -146,7 +146,7 @@ app.post('/login', (req, res) => {
             if(req.session.user.role == 'user')
                 res.redirect('/shopping');
             else
-                res.redirect('/inventory');
+                res.redirect('/admin');
         } else {
             // Invalid credentials
             req.flash('error', 'Invalid email or password.');
@@ -251,7 +251,7 @@ app.post('/addProduct', upload.single('image'),  (req, res) => {
             res.status(500).send('Error adding product');
         } else {
             // Send a success response
-            res.redirect('/inventory');
+            res.redirect('/admin');
         }
     });
 });
@@ -293,7 +293,7 @@ app.post('/updateProduct/:id', upload.single('image'), (req, res) => {
             res.status(500).send('Error updating product');
         } else {
             // Send a success response
-            res.redirect('/inventory');
+            res.redirect('/admin');
         }
     });
 });
@@ -308,7 +308,7 @@ app.get('/deleteProduct/:id', (req, res) => {
             res.status(500).send('Error deleting product');
         } else {
             // Send a success response
-            res.redirect('/inventory');
+            res.redirect('/admin');
         }
     });
 });
